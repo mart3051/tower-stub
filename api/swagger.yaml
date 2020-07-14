@@ -1,0 +1,165 @@
+---
+swagger: "2.0"
+info:
+  description: "Provides an interface to access and use Ansible Tower API"
+  version: "1.0.0"
+  title: "API for Ansible Tower"
+host: "virtserver.swaggerhub.com"
+basePath: "/martorg/AnsibleTowerAPI/1.0.0"
+tags:
+- name: "organisation"
+  description: "Create and manage the organisation"
+- name: "team"
+  description: "Adds user to privileged team"
+schemes:
+- "https"
+- "http"
+paths:
+  /organisation:
+    post:
+      tags:
+      - "organisation"
+      summary: "Add a new organisation to the Ansible tower"
+      operationId: "addOrganisation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Organisation to be added"
+        required: true
+        schema: {}
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "Organisation"
+    delete:
+      tags:
+      - "organisation"
+      summary: "Deletes an organisation from Ansible tower"
+      operationId: "deleteOrganisation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "orgName"
+        in: "path"
+        description: "Organisation name to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+        "404":
+          description: "Organisation not found"
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "Organisation"
+    patch:
+      tags:
+      - "organisation"
+      summary: "Updates an organisation to add team members"
+      operationId: "updateOrganisation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "orgName"
+        in: "path"
+        description: "Organisation name to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Team to be added"
+        required: true
+        schema: {}
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "Organisation not found"
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "Organisation"
+  /team:
+    patch:
+      tags:
+      - "team"
+      summary: "Add a new user to the privileged team"
+      operationId: "joinTeam"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "User to be added to privileged team"
+        required: false
+        schema: {}
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "user not found"
+        "405":
+          description: "Invalid input"
+      x-swagger-router-controller: "Team"
+definitions:
+  organisation:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+      justification:
+        type: "string"
+      orgName:
+        type: "string"
+      team:
+        $ref: "#/definitions/team"
+  team:
+    type: "object"
+    properties:
+      teamMembers:
+        type: "array"
+        items:
+          $ref: "#/definitions/user"
+      orgAdmins:
+        type: "array"
+        items:
+          $ref: "#/definitions/user"
+  user:
+    type: "object"
+    properties:
+      userId:
+        type: "string"
+  privilegedMember:
+    type: "object"
+    properties:
+      userId:
+        type: "string"
+      justification:
+        type: "string"

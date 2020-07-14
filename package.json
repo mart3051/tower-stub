@@ -1,0 +1,20 @@
+{
+  "name": "api-for-ansible-tower",
+  "version": "1.0.0",
+  "description": "Provides an interface to access and use Ansible Tower API",
+  "main": "index.js",
+  "scripts": {
+	"prestart": "npm install",
+	"start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.10.1"
+  }
+}
